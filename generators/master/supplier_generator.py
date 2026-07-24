@@ -1,27 +1,26 @@
 from faker import Faker
-import random
 import pandas as pd
+import random
 
 from config.config import Config
-
-fake = Faker()
+from utils.id_generator import IDGenerator
 
 
 class SupplierGenerator:
+    """Generates supplier master data."""
 
     def __init__(self):
+        self.fake = Faker()
         random.seed(Config.RANDOM_SEED)
         Faker.seed(Config.RANDOM_SEED)
 
-    def generate(self):
-
-        supplier_types = [
+        self.supplier_types = [
             "Manufacturer",
             "Distributor",
             "Importer"
         ]
 
-        categories = [
+        self.categories = [
             "Food",
             "Beverages",
             "Healthcare",
@@ -30,30 +29,28 @@ class SupplierGenerator:
             "Electronics"
         ]
 
-        suppliers = []
+    def _generate_supplier(self, supplier_id: int) -> dict:
+        """Generate one supplier record."""
 
-        for supplier_id in range(1, Config.SUPPLIERS + 1):
+        return {
+    "SupplierKey": supplier_id,
+    "SupplierID": IDGenerator.generate("SUP", supplier_id),
+    "SupplierName": self.fake.company(),
+    "SupplierType": random.choice(self.supplier_types),
+    "Category": random.choice(self.categories),
+    "ContactPerson": self.fake.name(),
+    "Email": self.fake.company_email(),
+    "Phone": self.fake.phone_number(),
+    "LeadTimeDays": random.randint(2, 30),
+    "SupplierRating": round(random.uniform(3.0, 5.0), 2),
+}
 
-            suppliers.append({
+    def generate(self) -> pd.DataFrame:
+        """Generate the supplier dimension."""
 
-                "SupplierKey": supplier_id,
-
-                "SupplierName": fake.company(),
-
-                "SupplierType": random.choice(supplier_types),
-
-                "Category": random.choice(categories),
-
-                "ContactPerson": fake.name(),
-
-                "Email": fake.company_email(),
-
-                "Phone": fake.phone_number(),
-
-                "LeadTimeDays": random.randint(2, 30),
-
-                "SupplierRating": round(random.uniform(3.0, 5.0), 2)
-
-            })
+        suppliers = [
+            self._generate_supplier(i)
+            for i in range(1, Config.SUPPLIERS + 1)
+        ]
 
         return pd.DataFrame(suppliers)

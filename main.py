@@ -1,24 +1,41 @@
-
-from generators.master.supplier_generator import SupplierGenerator
+from generators.master.product_generator import ProductGenerator
 
 
 def main():
 
-    print("Generating suppliers...")
+    print("Generating Product Dimension...")
 
-    generator = SupplierGenerator()
+    generator = ProductGenerator()
 
-    suppliers = generator.generate()
+    products = generator.generate()
 
-    print(suppliers.head())
-
-    suppliers.to_csv(
-        "output/bronze/DimSupplier.csv",
+    products.to_csv(
+        "output/bronze/DimProduct.csv",
         index=False
     )
 
-    print("\nSupplier file exported successfully!")
+    print("✅ DimProduct exported successfully!")
+
+    print(products.head())
+
+    print(products.info())
+
+    print("\nValidation Results")
+    print("-" * 40)
+
+    print("Duplicate Product IDs:",
+          products["ProductID"].duplicated().sum())
+
+    print("Duplicate Product Keys:",
+          products["ProductKey"].duplicated().sum())
+
+    print("\nMissing Values:")
+    print(products.isnull().sum())
+
+    print("\nRows:", len(products))
 
 
 if __name__ == "__main__":
     main()
+
+    

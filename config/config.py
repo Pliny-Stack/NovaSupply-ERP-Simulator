@@ -28,33 +28,33 @@ class Config:
     # Master Data
     # ---------------------------------
 
-    PRODUCTS = 2500
+    NUM_PRODUCTS = 2500
 
-    SUPPLIERS = 500
+    NUM_SUPPLIERS = 500
 
-    CUSTOMERS = 50000
+    NUM_CUSTOMERS = 50000
 
-    EMPLOYEES = 100
+    NUM_EMPLOYEES = 100
 
-    WAREHOUSES = 75
+    NUM_WAREHOUSES = 75
 
-    CARRIERS = 25
+    NUM_CARRIERS = 25
 
-    PROMOTIONS = 100
+    NUM_PROMOTIONS = 100
 
     # ---------------------------------
     # Transaction Data
     # ---------------------------------
 
-    SALES = 500000
+    NUM_SALES = 500000
 
-    PURCHASE_ORDERS = 150000
+    NUM_PURCHASE_ORDERS = 150000
 
-    INVENTORY_RECORDS = 300000
+    NUM_INVENTORY_RECORDS = 300000
 
-    SHIPMENTS = 200000
+    NUM_SHIPMENTS = 200000
 
-    RETURNS = 50000
+    NUM_RETURNS = 50000
 
     # ---------------------------------
     # Export Settings
