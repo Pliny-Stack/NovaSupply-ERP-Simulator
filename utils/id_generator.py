@@ -12,3 +12,5 @@ class IDGenerator:
         CUST10542
         """
         return f"{prefix}{number:0{digits}d}"
+    
+    

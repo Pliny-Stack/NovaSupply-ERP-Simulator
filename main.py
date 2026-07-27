@@ -1,41 +1,45 @@
-from generators.master.product_generator import ProductGenerator
+from generators.master.customer_generator import CustomerGenerator
 
 
 def main():
 
-    print("Generating Product Dimension...")
+    print("Generating Customer Dimension...")
 
-    generator = ProductGenerator()
+    generator = CustomerGenerator()
 
-    products = generator.generate()
+    customers = generator.generate()
 
-    products.to_csv(
-        "output/bronze/DimProduct.csv",
+    customers.to_csv(
+        "output/bronze/DimCustomer.csv",
         index=False
     )
 
-    print("✅ DimProduct exported successfully!")
+    print("✅ Customer Dimension exported successfully!")
 
-    print(products.head())
+    print("\nSample Data")
+    print(customers.head())
 
-    print(products.info())
+    print("\nDataset Information")
+    print(customers.info())
 
     print("\nValidation Results")
     print("-" * 40)
 
-    print("Duplicate Product IDs:",
-          products["ProductID"].duplicated().sum())
+    print("Rows:", len(customers))
 
-    print("Duplicate Product Keys:",
-          products["ProductKey"].duplicated().sum())
+    print(
+        "Duplicate Customer IDs:",
+        customers["CustomerID"].duplicated().sum()
+    )
 
-    print("\nMissing Values:")
-    print(products.isnull().sum())
+    print(
+        "Duplicate Customer Keys:",
+        customers["CustomerKey"].duplicated().sum()
+    )
 
-    print("\nRows:", len(products))
+    print("\nMissing Values")
+    print(customers.isnull().sum())
 
 
 if __name__ == "__main__":
     main()
-
-    
