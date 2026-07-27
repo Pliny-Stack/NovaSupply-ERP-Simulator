@@ -43,3 +43,23 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+    from generators.master.warehouse_generator import WarehouseGenerator
+
+
+def main():
+
+    print("Generating Warehouse Dimension...")
+
+    generator = WarehouseGenerator()
+
+    warehouses = generator.generate()
+
+    print(warehouses.head())
+
+    print(warehouses.info())
+
+
+if __name__ == "__main__":
+    main()

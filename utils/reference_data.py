@@ -1,3 +1,42 @@
+
+WAREHOUSE_PREFIXES = [
+    "Central",
+    "North",
+    "South",
+    "East",
+    "West",
+    "Regional"
+]
+
+
+COMPANY_PREFIXES = [
+    "Nova",
+    "Prime",
+    "Royal",
+    "Fresh",
+    "HealthFirst",
+    "City",
+    "Metro",
+    "LifeCare",
+    "Golden",
+    "Evergreen"
+]
+
+COMPANY_TYPES = [
+    "Pharmacy",
+    "Supermarket",
+    "Stores",
+    "Distribution",
+    "Ventures",
+    "Logistics",
+    "Wholesale",
+    "Enterprises"
+]
+
+
+
+
+
 FIRST_NAMES = [
     "Chinedu", "Chioma", "Emeka", "Amina", "Ibrahim",
     "Tunde", "Bisi", "Ngozi", "Uche", "Kelechi",
