@@ -1,64 +1,49 @@
-from generators.master.customer_generator import CustomerGenerator
+from generators.transactions.inventory_generator import InventoryGenerator
 
 
 def main():
 
-    print("Generating Customer Dimension...")
+    print("Generating Inventory...")
 
-    generator = CustomerGenerator()
+    generator = InventoryGenerator()
 
-    customers = generator.generate()
+    inventory = generator.generate()
 
-    customers.to_csv(
-        "output/bronze/DimCustomer.csv",
+    inventory.to_csv(
+        "output/bronze/FactInventory.csv",
         index=False
     )
 
-    print("✅ Customer Dimension exported successfully!")
+    print("✅ FactInventory exported successfully!")
 
-    print("\nSample Data")
-    print(customers.head())
+    print(inventory.head())
 
-    print("\nDataset Information")
-    print(customers.info())
+    print()
+
+    print(inventory.info())
 
     print("\nValidation Results")
     print("-" * 40)
 
-    print("Rows:", len(customers))
+    print("Rows:", len(inventory))
 
     print(
-        "Duplicate Customer IDs:",
-        customers["CustomerID"].duplicated().sum()
+        "Duplicate Inventory Keys:",
+        inventory["InventoryKey"].duplicated().sum()
     )
+
+    duplicate_pairs = inventory.duplicated(
+        subset=["WarehouseKey", "ProductKey"]
+    ).sum()
 
     print(
-        "Duplicate Customer Keys:",
-        customers["CustomerKey"].duplicated().sum()
+        "Duplicate Warehouse/Product combinations:",
+        duplicate_pairs
     )
 
-    print("\nMissing Values")
-    print(customers.isnull().sum())
+    print("\nMissing Values:")
 
-
-if __name__ == "__main__":
-    main()
-
-
-    from generators.master.warehouse_generator import WarehouseGenerator
-
-
-def main():
-
-    print("Generating Warehouse Dimension...")
-
-    generator = WarehouseGenerator()
-
-    warehouses = generator.generate()
-
-    print(warehouses.head())
-
-    print(warehouses.info())
+    print(inventory.isnull().sum())
 
 
 if __name__ == "__main__":
