@@ -1,50 +1,46 @@
-from generators.transactions.inventory_generator import InventoryGenerator
+from generators.transactions.purchase_order_generator import PurchaseOrderGenerator
 
 
 def main():
 
-    print("Generating Inventory...")
+    print("Generating Purchase Orders...")
 
-    generator = InventoryGenerator()
+    generator = PurchaseOrderGenerator()
 
-    inventory = generator.generate()
+    purchase_orders = generator.generate()
 
-    inventory.to_csv(
-        "output/bronze/FactInventory.csv",
-        index=False
-    )
-
-    print("✅ FactInventory exported successfully!")
-
-    print(inventory.head())
+    print(purchase_orders.head())
 
     print()
 
-    print(inventory.info())
+    print(purchase_orders.info())
 
     print("\nValidation Results")
     print("-" * 40)
 
-    print("Rows:", len(inventory))
+    print("Rows:", len(purchase_orders))
 
     print(
-        "Duplicate Inventory Keys:",
-        inventory["InventoryKey"].duplicated().sum()
+        "Duplicate Purchase Order Keys:",
+        purchase_orders["PurchaseOrderKey"].duplicated().sum()
     )
 
-    duplicate_pairs = inventory.duplicated(
-        subset=["WarehouseKey", "ProductKey"]
-    ).sum()
-
     print(
-        "Duplicate Warehouse/Product combinations:",
-        duplicate_pairs
+        "Duplicate Purchase Order IDs:",
+        purchase_orders["PurchaseOrderID"].duplicated().sum()
     )
 
     print("\nMissing Values:")
-
-    print(inventory.isnull().sum())
+    print(purchase_orders.isnull().sum())
+    return purchase_orders
 
 
 if __name__ == "__main__":
-    main()
+    purchase_orders = main()
+
+    purchase_orders.to_csv(
+        "output/bronze/FactPurchaseOrder.csv",
+        index=False
+    )
+
+    print("✅ FactPurchaseOrder exported successfully!")
