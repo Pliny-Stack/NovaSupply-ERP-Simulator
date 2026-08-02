@@ -41,69 +41,91 @@ class CustomerGenerator:
             "Suspended"
         ]
 
-    def _generate_customer(self, customer_key):
+
+    def _generate_employee(self, employee_key):
         first_name = random.choice(FIRST_NAMES)
         last_name = random.choice(LAST_NAMES)
+        full_name = f"{first_name} {last_name}"
 
         email = (
             f"{first_name.lower()}."
-            f"{last_name.lower()}@"
-            f"{random.choice(EMAIL_DOMAINS)}"
+            f"{last_name.lower()}@novasupply.com"
         )
 
         phone = generate_phone()
 
-        region, state, city = generate_location()
-        customer_name = f"{first_name} {last_name}"
-        company_name = ""
+        department = random.choice(self.departments)
 
-        customer_type = random.choice(self.customer_types)
+        job_title = random.choice(
+            self.job_titles[department]
+        )
 
-        if customer_type != "Retail":
-            company_name = (
-                f"{random.choice(['Nova', 'Prime', 'Royal', 'Fresh', 'Urban', 'Health'])} "
-                f"{random.choice(['Stores', 'Supermarket', 'Pharmacy', 'Distribution', 'Ventures'])}"
-            )
+        if "Officer" in job_title:
+            salary = random.randint(180000, 350000)
 
-        if customer_type == "Retail":
-            credit_limit = random.randint(100000, 500000)
-        elif customer_type == "Wholesale":
-            credit_limit = random.randint(2000000, 10000000)
-        elif customer_type == "Distributor":
-            credit_limit = random.randint(10000000, 30000000)
-        elif customer_type == "Corporate":
-            credit_limit = random.randint(20000000, 50000000)
+        elif "Supervisor" in job_title:
+            salary = random.randint(350000, 600000)
+
+        elif "Manager" in job_title:
+            salary = random.randint(700000, 1500000)
+
+        elif "Analyst" in job_title:
+            salary = random.randint(300000, 550000)
+
         else:
-            credit_limit = random.randint(5000000, 25000000)
+            salary = random.randint(200000, 400000)
 
-        registration_date = DateGenerator.generate_date(
+        hire_date = DateGenerator.generate_date(
             Config.START_YEAR,
             Config.START_YEAR + Config.NUMBER_OF_YEARS - 1
         )
 
+        status = random.choices(
+            self.statuses,
+            weights=[90, 7, 3]
+        )[0]
+
         return {
-            "CustomerKey": customer_key,
-            "CustomerID": IDGenerator.generate("CUST", customer_key),
-            "CustomerType": customer_type,
-            "CustomerSegment": random.choice(self.customer_segments),
-            "CustomerName": customer_name,
-            "CompanyName": company_name,
-            "Email": email,
-            "Phone": phone,
-            "Status": random.choices(self.statuses, weights=[90, 8, 2])[0],
-            "Region": region,
-            "State": state,
-            "City": city,
-            "CreditLimit": credit_limit,
-            "RegistrationDate": registration_date,
-        }
+
+        "EmployeeKey": employee_key,
+
+        "EmployeeID": IDGenerator.generate(
+            "EMP",
+            employee_key
+        ),
+
+        "FirstName": first_name,
+
+        "LastName": last_name,
+
+        "FullName": full_name,
+
+        "Department": department,
+
+        "JobTitle": job_title,
+
+        "Email": email,
+
+        "Phone": phone,
+
+        "HireDate": hire_date,
+
+        "Salary": salary,
+
+        "Status": status
+
+    }
 
     def generate(self):
-        customers = []
+        employees = []
 
-        for customer_key in range(1, Config.NUM_CUSTOMERS + 1):
-            customers.append(
-                self._generate_customer(customer_key)
+        for employee_key in range(
+            1,
+            Config.NUM_EMPLOYEES + 1
+        ):
+
+            employees.append(
+                self._generate_employee(employee_key)
             )
 
-        return pd.DataFrame(customers)
+        return pd.DataFrame(employees)

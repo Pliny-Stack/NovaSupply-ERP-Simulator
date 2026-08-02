@@ -1,46 +1,46 @@
-from generators.transactions.purchase_order_generator import PurchaseOrderGenerator
+from generators.master.employee_generator import EmployeeGenerator
 
 
 def main():
 
-    print("Generating Purchase Orders...")
+    print("Generating Employee Dimension...")
 
-    generator = PurchaseOrderGenerator()
+    generator = EmployeeGenerator()
 
-    purchase_orders = generator.generate()
+    employees = generator.generate()
 
-    print(purchase_orders.head())
+    print(employees.head())
 
     print()
 
-    print(purchase_orders.info())
+    print(employees.info())
 
     print("\nValidation Results")
     print("-" * 40)
 
-    print("Rows:", len(purchase_orders))
+    print("Rows:", len(employees))
 
     print(
-        "Duplicate Purchase Order Keys:",
-        purchase_orders["PurchaseOrderKey"].duplicated().sum()
+        "Duplicate Employee Keys:",
+        employees["EmployeeKey"].duplicated().sum()
     )
 
     print(
-        "Duplicate Purchase Order IDs:",
-        purchase_orders["PurchaseOrderID"].duplicated().sum()
+        "Duplicate Employee IDs:",
+        employees["EmployeeID"].duplicated().sum()
     )
 
     print("\nMissing Values:")
-    print(purchase_orders.isnull().sum())
-    return purchase_orders
+    print(employees.isnull().sum())
+
+    employees.to_csv(
+    "output/bronze/DimEmployee.csv",
+    index=False
+)
+
+print("✅ DimEmployee exported successfully!")
 
 
 if __name__ == "__main__":
-    purchase_orders = main()
+    main()
 
-    purchase_orders.to_csv(
-        "output/bronze/FactPurchaseOrder.csv",
-        index=False
-    )
-
-    print("✅ FactPurchaseOrder exported successfully!")
