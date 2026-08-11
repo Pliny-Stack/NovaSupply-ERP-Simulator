@@ -116,16 +116,4 @@ class CustomerGenerator:
 
     }
 
-    def generate(self):
-        employees = []
-
-        for employee_key in range(
-            1,
-            Config.NUM_EMPLOYEES + 1
-        ):
-
-            employees.append(
-                self._generate_employee(employee_key)
-            )
-
-        return pd.DataFrame(employees)
+    

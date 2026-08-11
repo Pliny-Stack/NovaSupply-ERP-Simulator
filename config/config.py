@@ -55,6 +55,7 @@ class Config:
     NUM_SHIPMENTS = 200000
 
     NUM_RETURNS = 50000
+    NUM_EMPLOYEES = 100
 
     # ---------------------------------
     # Export Settings
