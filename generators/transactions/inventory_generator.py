@@ -32,8 +32,7 @@ class InventoryGenerator:
 
         unit_cost = random.randint(500, 50000)
 
-        inventory_value = available * unit_cost
-
+        inventory_value = quantity * unit_cost
         stock_count_date = DateGenerator.generate_date(
             Config.START_YEAR,
             Config.START_YEAR + Config.NUMBER_OF_YEARS - 1,
