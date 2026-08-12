@@ -1,81 +1,70 @@
-
-from generators.transactions.sales_generator import SalesGenerator
+from generators.transactions.shipment_generator import ShipmentGenerator
 
 
 def main():
 
-    print("Generating Sales...")
+    print("Generating Shipments...")
 
-    generator = SalesGenerator()
+    generator = ShipmentGenerator()
 
-    sales = generator.generate()
+    shipments = generator.generate()
 
-    print("\nSales Preview")
-    print("-" * 40)
-    print(sales.head())
+    print(shipments.head())
 
-    print("\nSales Info")
-    print("-" * 40)
-    print(sales.info())
+    print("\nRows:", len(shipments))
+
+    print("\nColumns:")
+    print(shipments.columns.tolist())
 
     print("\nValidation Results")
     print("-" * 40)
 
-    print("Rows:", len(sales))
-
     print(
-        "Duplicate Sales Keys:",
-        sales["SalesKey"].duplicated().sum()
+        "Duplicate Shipment Keys:",
+        shipments["ShipmentKey"].duplicated().sum()
     )
 
     print(
-        "Duplicate Sales IDs:",
-        sales["SalesID"].duplicated().sum()
+        "Duplicate Shipment IDs:",
+        shipments["ShipmentID"].duplicated().sum()
     )
 
     print("\nMissing Values:")
-    print(sales.isnull().sum())
+    print(shipments.isnull().sum())
 
-    print("\nRevenue Check:")
+    print("\nQuantity Validation:")
     print(
-        "Incorrect Revenue:",
+        "Invalid quantities:",
+        (shipments["QuantityShipped"] <= 0).sum()
+    )
+
+    print("\nShipping Cost Validation:")
+    print(
+        "Invalid shipping costs:",
+        (shipments["ShippingCost"] <= 0).sum()
+    )
+
+    delivered = shipments[
+        shipments["ActualDeliveryDate"].notna()
+    ]
+
+    print(
+        "Actual delivery before shipment:",
         (
-            sales["Revenue"].round(2)
-            != (sales["QuantitySold"] * sales["UnitPrice"]).round(2)
+            delivered["ActualDeliveryDate"]
+            < delivered["ShipmentDate"]
         ).sum()
     )
 
-    print("\nCost Check:")
-    print(
-        "Incorrect Cost:",
-        (
-            sales["Cost"].round(2)
-            != (sales["QuantitySold"] * sales["UnitCost"]).round(2)
-        ).sum()
-    )
+    shipments.to_csv(
+    "output/bronze/FactShipment.csv",
+    index=False
+)
 
-    print("\nProfit Check:")
-    print(
-        "Incorrect Gross Profit:",
-        (
-            sales["GrossProfit"].round(2)
-            != (sales["Revenue"] - sales["Cost"]).round(2)
-        ).sum()
-    )
+print("✅ FactShipment exported successfully!")
 
-    print(sales.head())
-
-    print()
-
-    print(sales.info())
-        return sales
 
 if __name__ == "__main__":
-    sales = main()
+    main()
 
-    sales.to_csv(
-        "output/bronze/FactSales.csv",
-        index=False
-    )
 
-    print("✅ FactSales exported successfully!")
