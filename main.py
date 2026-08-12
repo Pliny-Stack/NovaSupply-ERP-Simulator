@@ -1,67 +1,27 @@
-from generators.transactions.shipment_generator import ShipmentGenerator
+from generators.transactions.return_generator import ReturnGenerator
 
 
 def main():
 
-    print("Generating Shipments...")
+    print("Generating Returns...")
 
-    generator = ShipmentGenerator()
+    generator = ReturnGenerator()
 
-    shipments = generator.generate()
+    returns = generator.generate()
 
-    print(shipments.head())
+    print(returns.head())
 
-    print("\nRows:", len(shipments))
+    print("\nRows:", len(returns))
 
     print("\nColumns:")
-    print(shipments.columns.tolist())
+    print(returns.columns.tolist())
 
-    print("\nValidation Results")
-    print("-" * 40)
-
-    print(
-        "Duplicate Shipment Keys:",
-        shipments["ShipmentKey"].duplicated().sum()
-    )
-
-    print(
-        "Duplicate Shipment IDs:",
-        shipments["ShipmentID"].duplicated().sum()
-    )
-
-    print("\nMissing Values:")
-    print(shipments.isnull().sum())
-
-    print("\nQuantity Validation:")
-    print(
-        "Invalid quantities:",
-        (shipments["QuantityShipped"] <= 0).sum()
-    )
-
-    print("\nShipping Cost Validation:")
-    print(
-        "Invalid shipping costs:",
-        (shipments["ShippingCost"] <= 0).sum()
-    )
-
-    delivered = shipments[
-        shipments["ActualDeliveryDate"].notna()
-    ]
-
-    print(
-        "Actual delivery before shipment:",
-        (
-            delivered["ActualDeliveryDate"]
-            < delivered["ShipmentDate"]
-        ).sum()
-    )
-
-    shipments.to_csv(
-    "output/bronze/FactShipment.csv",
+    returns.to_csv(
+    "output/bronze/FactReturns.csv",
     index=False
 )
 
-print("✅ FactShipment exported successfully!")
+print("✅ FactReturns exported successfully!")
 
 
 if __name__ == "__main__":
